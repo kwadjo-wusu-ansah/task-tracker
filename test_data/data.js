@@ -67,6 +67,6 @@ export const tasks = [
     title: "Deployment prep",
     description: "Prepare env variables",
     complete: false,
-    dueDate: 1778284800000,
+    dueDate: undefined,
   },
 ];

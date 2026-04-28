@@ -29,23 +29,26 @@ export const getTaskById = (req, res, next) => {
 };
 
 export const createTask = (req, res, next) => {
-  const { id } = req.params;
-  if (!id) {
-    const error = new Error("Id is missing or Invalid");
-    error.status = 404;
-    return next(error);
-  }
-  const task = tasks.find((task) => task.id === id);
-
-  if (!task) {
-    const error = new Error("Task not Found");
-    error.status = 404;
+  const { title, description, dueDate } = req.body;
+  if (!title || !description) {
+    const error = new Error("Title and description are required");
+    error.status = 400;
     return next(error);
   }
 
-  res.status(200).json({ success: true, data: task });
+  const newTask = {
+    id: Date.now().toString(),
+    title,
+    description,
+    dueDate: dueDate || undefined,
+    complete: false,
+  };
+
+  tasks.push(newTask);
+
+  res.status(201).json({ success: true, data: newTask });
 };
-
+  
 export const updateTask = (req, res, next) => {
   const { id } = req.params;
 
