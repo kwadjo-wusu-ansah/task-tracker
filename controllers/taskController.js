@@ -30,8 +30,8 @@ export const getTaskById = (req, res, next) => {
 
 export const createTask = (req, res, next) => {
   const { title, description, dueDate } = req.body;
-  if (!title || !description) {
-    const error = new Error("Title and description are required");
+  if (!title) {
+    const error = new Error("Title is required");
     error.status = 400;
     return next(error);
   }
@@ -39,7 +39,7 @@ export const createTask = (req, res, next) => {
   const newTask = {
     id: Date.now().toString(),
     title,
-    description,
+    description: description || undefined,
     dueDate: dueDate || undefined,
     complete: false,
   };
@@ -48,7 +48,7 @@ export const createTask = (req, res, next) => {
 
   res.status(201).json({ success: true, data: newTask });
 };
-  
+
 export const updateTask = (req, res, next) => {
   const { id } = req.params;
 

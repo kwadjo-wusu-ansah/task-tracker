@@ -5,6 +5,7 @@ export const tasks = [
     description: "Initialize PostgreSQL tables",
     complete: true,
     dueDate: 1777507200000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000002",
@@ -12,6 +13,7 @@ export const tasks = [
     description: "Implement JWT middleware",
     complete: false,
     dueDate: 1777593600000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000003",
@@ -19,6 +21,7 @@ export const tasks = [
     description: "Create wireframes in Figma",
     complete: false,
     dueDate: 1777680000000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000004",
@@ -26,6 +29,7 @@ export const tasks = [
     description: "Cover user controller logic",
     complete: false,
     dueDate: 1777766400000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000005",
@@ -33,6 +37,7 @@ export const tasks = [
     description: "Consolidate to express.Router",
     complete: true,
     dueDate: 1777852800000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000006",
@@ -40,6 +45,7 @@ export const tasks = [
     description: "Configure GitHub Actions",
     complete: false,
     dueDate: 1777939200000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000007",
@@ -47,6 +53,7 @@ export const tasks = [
     description: "Add setup instructions",
     complete: false,
     dueDate: 1778025600000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000008",
@@ -54,13 +61,15 @@ export const tasks = [
     description: "Use Winston for logging",
     complete: true,
     dueDate: 1778112000000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000009",
     title: "Enable CORS",
     description: "Restrict to frontend domain",
     complete: false,
-    dueDate: 1778198400000,
+    dueDate: 1778112000000,
+    createdAt: 1777420800000,
   },
   {
     id: "task-01J04Z09X00000000000000010",
@@ -68,5 +77,6 @@ export const tasks = [
     description: "Prepare env variables",
     complete: false,
     dueDate: undefined,
+    createdAt: 1777420800000,
   },
 ];

@@ -4,8 +4,10 @@ import taskRoutes from "./routes/taskRoutes.js";
 import { requestLogger } from "./middlewares/logger.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
+import { connectDB } from "./config/db.js";
 
 const app = express();
+connectDB();
 
 app.use(requestLogger);
 app.use(express.json()); // middleware for parsing the req body
