@@ -1,126 +1,72 @@
 import Task from "../models/tasks.js";
+import { catchAsync } from "../utils/catchAsync.js";
 
-export const getAllTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find();
-    res.status(200).json({
-      success: true,
-      data: tasks,
-    });
-  } catch (error) {
-    return next(error);
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
   }
-};
+}
 
-export const getTaskById = async (req, res, next) => {
-  const { id } = req.params;
+export const getAllTasks = catchAsync(async (req, res, next) => {
+  const tasks = await Task.find();
+  res.status(200).json({ success: true, data: tasks });
+});
 
-  try {
-    const task = await Task.findById(id);
-    if (!task) {
-      const error = new Error("Task not Found");
-      error.status = 404;
-      return next(error);
-    }
-    res.status(200).json({
-      success: true,
-      data: task,
-    });
-  } catch (error) {
-    if (error.name === "CastError") {
-      error.message = "Invalid Task ID format";
-      error.status = 400;
-    }
-    next(error);
-  }
-};
+export const getTaskById = catchAsync(async (req, res, next) => {
+  const task = await Task.findById(req.params.id);
 
-export const createTask = async (req, res, next) => {
-  const { title, description, dueDate } = req.body;
-
-  if (!title) {
-    const error = new Error("Title is required");
-    error.status = 400;
-    return next(error);
+  if (!task) {
+    return next(new AppError("Task not Found", 404));
   }
 
-  try {
-    const newTask = new Task({
-      title,
-      description,
-      dueDate,
-    });
+  res.status(200).json({ success: true, data: task });
+});
 
-    const savedTask = await newTask.save();
+export const createTask = catchAsync(async (req, res, next) => {
+  // If title is required in your Mongoose Schema,
+  // the globalErrorHandler will catch the ValidationError automatically!
+  const savedTask = await Task.create(req.body);
 
-    res.status(201).json({
-      success: true,
-      message: "Task created successfully",
-      data: savedTask,
-    });
-  } catch (error) {
-    if (error.name === "ValidationError") {
-      const messages = Object.values(error.errors).map((val) => val.message);
-      error.message = messages.join(", ");
-      error.status = 400;
-    }
+  res.status(201).json({
+    success: true,
+    message: "Task created successfully",
+    data: savedTask,
+  });
+});
 
-    next(error);
+export const updateTask = catchAsync(async (req, res, next) => {
+  const updatedTask = await Task.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body },
+    { new: true, runValidators: true },
+  );
+
+  if (!updatedTask) {
+    return next(new AppError("Task not found", 404));
   }
-};
 
-export const updateTask = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      { $set: req.body },
-      { new: true, runValidators: true },
-    );
-
-    if (!updatedTask) {
-      const error = new Error("Task not found");
-      error.status = 404;
-      return next(error);
-    }
-
-    res.status(200).json({
+  res
+    .status(200)
+    .json({
       success: true,
       message: "Task updated successfully",
       data: updatedTask,
     });
-  } catch (error) {
-    if (error.name === "CastError") {
-      error.message = "Invalid Task ID format";
-      error.status = 400;
-    }
-    next(error);
+});
+
+export const deleteTask = catchAsync(async (req, res, next) => {
+  const deletedTask = await Task.findByIdAndDelete(req.params.id);
+
+  if (!deletedTask) {
+    return next(new AppError("Task not found", 404));
   }
-};
 
-export const deleteTask = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const deletedTask = await Task.findByIdAndDelete(id);
-
-    if (!deletedTask) {
-      const error = new Error("Task not found");
-      error.status = 404;
-      return next(error);
-    }
-
-    res.status(200).json({
+  res
+    .status(200)
+    .json({
       success: true,
       message: "Task deleted successfully",
       data: deletedTask,
     });
-  } catch (error) {
-    if (error.name === "CastError") {
-      error.message = "Invalid Task ID format";
-      error.status = 400;
-    }
-    next(error);
-  }
-};
+});
