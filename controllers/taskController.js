@@ -39,20 +39,18 @@ export const updateTask = catchAsync(async (req, res, next) => {
   const updatedTask = await Task.findByIdAndUpdate(
     req.params.id,
     { $set: req.body },
-    { new: true, runValidators: true },
+    { returnDocument: "after", runValidators: true },
   );
 
   if (!updatedTask) {
     return next(new AppError("Task not found", 404));
   }
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      message: "Task updated successfully",
-      data: updatedTask,
-    });
+  res.status(200).json({
+    success: true,
+    message: "Task updated successfully",
+    data: updatedTask,
+  });
 });
 
 export const deleteTask = catchAsync(async (req, res, next) => {
@@ -62,11 +60,9 @@ export const deleteTask = catchAsync(async (req, res, next) => {
     return next(new AppError("Task not found", 404));
   }
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      message: "Task deleted successfully",
-      data: deletedTask,
-    });
+  res.status(200).json({
+    success: true,
+    message: "Task deleted successfully",
+    data: deletedTask,
+  });
 });

@@ -2,8 +2,6 @@ export const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  console.error(error);
-
   // Mongoose Bad ObjectID (CastError)
   if (err.name === "CastError") {
     error.message = "Invalid Task ID format";
