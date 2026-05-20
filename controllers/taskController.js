@@ -9,7 +9,23 @@ class AppError extends Error {
 }
 
 export const getAllTasks = catchAsync(async (req, res, next) => {
-  const tasks = await Task.find();
+  const match = {};
+  let sortOrder = {};
+
+  if (req.query.completed) {
+    match.completed = req.query.completed === "true";
+  }
+
+  if (req.query.sort) {
+    const isDescending = req.query.sort.startsWith("-");
+    const sortBy = isDescending ? req.query.sort.substring(1) : req.query.sort;
+
+    sortOrder[sortBy] = isDescending ? -1 : 1;
+  } else {
+    sortOrder["createdAt"] = -1;
+  }
+
+  const tasks = await Task.find(match).sort(sortOrder);
   res.status(200).json({ success: true, data: tasks });
 });
 
